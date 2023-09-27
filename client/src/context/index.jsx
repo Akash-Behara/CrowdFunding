@@ -28,12 +28,44 @@ export const StateContextProvider = ({ children }) => {
         }
     }
 
+    const getCampagins = async () => {
+        try {
+            const campaigns = await contract.call('getCampagins')
+            const parsedCampaigns = campaigns.map((campaign, idx) => ({
+                owner: campaign.owner,
+                title: campaign.title,
+                description: campaign.description,
+                deadline: campaign.deadline,
+                target: ethers.utils.formatEther(campaign.target.toString()),
+                amountCollected: ethers.utils.formatEther(campaign.amountCollected.toString()),
+                image: campaign.image,
+                pId: idx
+            }))
+            return parsedCampaigns;
+            
+        } catch (error) {
+            console.log('Error fetching campaigns', error);
+        }
+    }
+
+    const getUserCampaigns = async () => {
+        try {
+            const allCampaigns = await getCampagins();
+            const filteredCampaigns = allCampaigns.filter((campaign, idx) => campaign.owner === address);
+            return filteredCampaigns;
+        } catch (error) {
+            console.log('Error getting user campaigns', error);
+        }
+    }
+
     return (
         <StateContext.Provider value={{
             address,
             connect,
             contract,
-            createCampagin: publishCampaign
+            createCampagin: publishCampaign,
+            getCampagins,
+            getUserCampaigns
         }}>
             {children}
         </StateContext.Provider>
