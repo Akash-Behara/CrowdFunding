@@ -82,7 +82,7 @@ const CampaignDetails = () => {
               {donators.length > 0 
                 ? donators.map((donator, idx) => (
                     <div key={donator.donator} className='flex justify-between items-center gap-4'>
-                      <p className='font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] truncate'>{idx + 1}. {donator.donator}</p>
+                      <p className='font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] truncate break-all'>{idx + 1}. {donator.donator}</p>
                       <p className='font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-11'>{donator.donation} <span className='text-[14px] text-[#b2b3bd]'>ETH</span></p>
                     </div>
                   ))
