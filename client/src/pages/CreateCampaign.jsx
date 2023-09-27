@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ethers } from 'ethers';
 
+import { useStateContext } from '../context'
 import { money } from '../assets';
 import { CustomButton, FormField } from '../components';
 import { checkIfImage } from '../utils';
@@ -10,6 +11,7 @@ import { checkIfImage } from '../utils';
 
 const CreateCampaign = () => {
   const navigate = useNavigate();
+  const { createCampagin } = useStateContext();
   const [isLoading, setisLoading] = useState(false);
   const [form, setForm] = useState({
     name: '',
@@ -24,9 +26,20 @@ const CreateCampaign = () => {
     setForm({ ...form, [fieldName]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('values', e)
+    setisLoading(true);
+
+    checkIfImage(form.image, async (exists) => {
+      if(exists){
+        await createCampagin({...form, target: ethers.utils.parseUnits(form.target, 18)});
+        setisLoading(false);
+        navigate('/')
+      } else {
+        alert("Provide valid Image URL")
+        setForm({...form, image: ''});
+      }
+    })
   }
 
   return (
