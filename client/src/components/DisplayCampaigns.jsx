@@ -5,9 +5,10 @@ import FundCard from './FundCard';
 import { loader } from '../assets';
 
 const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
+    const navigate = useNavigate();
 
     const handleNavigate = (campaign) => {
-        Navigate(`/campaign-details/${campaign.title}`, {state: campaign})
+        navigate(`/campaign-details/${campaign.title}`, {state: campaign})
     }
 
   return (
